@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center for Secure and Reliable Space Communications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><defs><radialGradient id="stars" cx="50%" cy="30%" r="70%"><stop offset="0%" style="stop-color:%23000020;stop-opacity:1" /><stop offset="70%" style="stop-color:%23000010;stop-opacity:1" /><stop offset="100%" style="stop-color:%23000000;stop-opacity:1" /></radialGradient></defs><rect width="100%" height="100%" fill="url(%23stars)"/><circle cx="200" cy="150" r="1" fill="white" opacity="0.8"/><circle cx="800" cy="200" r="0.5" fill="white" opacity="0.6"/><circle cx="1200" cy="100" r="1.2" fill="white" opacity="0.9"/><circle cx="1600" cy="180" r="0.8" fill="white" opacity="0.7"/><circle cx="300" cy="300" r="0.6" fill="white" opacity="0.5"/><circle cx="900" cy="350" r="1" fill="white" opacity="0.8"/><circle cx="1400" cy="280" r="0.7" fill="white" opacity="0.6"/><circle cx="500" cy="450" r="0.9" fill="white" opacity="0.7"/><circle cx="1100" cy="400" r="1.1" fill="white" opacity="0.8"/><circle cx="1700" cy="350" r="0.5" fill="white" opacity="0.6"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 4rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .logo-icon:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .logo-icon:hover svg {
+            filter: drop-shadow(0 0 15px rgba(0, 170, 255, 0.8));
+        }
+
+        .logo-icon svg {
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4));
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00aaff;
+        }
+
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .partner-logos {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+            align-items: center;
+        }
+
+        .partner-logo-small {
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 4px rgba(0, 170, 255, 0.3));
+        }
+
+        .partner-logo-small img {
+            height: 30px;
+            width: auto;
+            max-width: 60px;
+            object-fit: contain;
+        }
+
+        .partner-logo-small:first-child img {
+            height: 24px;
+            max-width: 50px;
+        }
+
+        .partner-logo-small:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.5));
+        }
+
+        .nav {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav a {
+            color: #00aaff;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 1rem;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 170, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav a:hover::before {
+            left: 100%;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            border-color: #00aaff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
+        }
+
+        .nav a:active {
+            transform: translateY(0);
+        }
+
+        .main-content {
+            margin-top: 0;
+            min-height: 100vh;
+        }
+
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00aaff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 170, 255, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #00aaff, #0088cc);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 170, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 170, 255, 0.4);
+        }
+
+        .simulation-container {
+            margin: 4rem 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .simulation-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00aaff;
+        }
+
+        .simulation-header p {
+            font-size: 1.1rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+
+
+        .seamless-iframe {
+            width: 100%;
+            height: 50vh;
+            border: none;
+            display: block;
+            margin-top: 0;
+        }
+
+        .simulation-section {
+            padding: 0;
+            margin: 0;
+        }
+
+        .operations-container {
+            margin: 4rem 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .simulation-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00aaff;
+        }
+
+        .research-container, .contact-container {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00aaff;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .research-card {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .research-card:hover {
+            background: rgba(0, 170, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 170, 255, 0.3);
+        }
+
+        .research-card h3 {
+            font-size: 1.5rem;
+            color: #00aaff;
+            margin-bottom: 1rem;
+        }
+
+        .research-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+
+        #dropdown-1 {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        #dropdown-1.active {
+            max-height: 200px !important;
+            overflow-y: auto !important;
+        }
+
+        #dropdown-2 {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        #dropdown-2.active {
+            max-height: 200px !important;
+            overflow-y: auto !important;
+        }
+
+        #dropdown-3 {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        #dropdown-3.active {
+            max-height: 200px !important;
+            overflow-y: auto !important;
+        }
+
+        .research-dropdown p {
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            text-align: left;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: #00aaff;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .team-container {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-content {
+            margin-top: 2rem;
+        }
+
+        .team-section {
+            margin-bottom: 4rem;
+        }
+
+        .team-section h3 {
+            font-size: 2rem;
+            color: #00aaff;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            background: rgba(0, 170, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 170, 255, 0.3);
+        }
+
+        .member-photo {
+            margin-bottom: 1.5rem;
+        }
+
+        .member-photo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00aaff;
+        }
+
+        .member-info h4 {
+            font-size: 1.3rem;
+            color: #00aaff;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-info p {
+            color: #ccc;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .bio-toggle {
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .bio-toggle:hover {
+            background: rgba(0, 170, 255, 0.3);
+            color: white;
+        }
+
+        .bio-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .bio-dropdown.active {
+            max-height: 200px;
+        }
+
+        .bio-dropdown p {
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            text-align: left;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 0;
+        }
+
+        .projects-container, .partners-container {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-grid, .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card, .partner-card {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover, .partner-card:hover {
+            background: rgba(0, 170, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 170, 255, 0.3);
+        }
+
+        .project-icon {
+            margin-bottom: 1.5rem;
+        }
+
+        .project-info h4, .partner-info h4 {
+            font-size: 1.3rem;
+            color: #00aaff;
+            margin-bottom: 1rem;
+        }
+
+        .project-info p, .partner-info p {
+            color: #ccc;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .project-toggle {
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .project-toggle:hover {
+            background: rgba(0, 170, 255, 0.3);
+            color: white;
+        }
+
+        .project-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .project-dropdown.active {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .project-dropdown p {
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            text-align: left;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        .partner-logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .partner-logo img {
+            height: 60px;
+            width: auto;
+            max-width: 150px;
+            object-fit: contain;
+        }
+
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .iframe-overlay:hover {
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .overlay-content {
+            text-align: center;
+            color: white;
+        }
+
+        .overlay-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #00aaff;
+        }
+
+        .overlay-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        .launch-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #00aaff, #0088cc);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 170, 255, 0.3);
+        }
+
+        .launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 170, 255, 0.4);
+        }
+
+        .iframe-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00aaff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 170, 255, 0.3);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            color: #00aaff;
+            margin-bottom: 1rem;
+        }
+
+        .footer p {
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links a {
+            color: #00aaff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .simulation-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .simulation-canvas {
+                height: 400px;
+            }
+
+            .stats-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.2rem;
+            color: #00aaff;
+        }
+
+        .loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00aaff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            margin-left: 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="partner-logos">
+                <div class="partner-logo-small">
+                    <img src="NSM_Forkortelse liggende_negativ.png (optimized_original).png" alt="NSM Logo" />
+                </div>
+                <div class="partner-logo-small">
+                    <img src="UiB_NegativMidtstilt_ENG.png" alt="UiB Logo" />
+                </div>
+            </div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00aaff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#0088cc;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#006699;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Hexagonal base -->
+                        <polygon points="25,5 40,15 40,35 25,45 10,35 10,15" 
+                                 stroke="url(#techGradient)" 
+                                 stroke-width="2" 
+                                 fill="none" 
+                                 filter="url(#glow)"/>
+                        
+                        <!-- Inner hexagon -->
+                        <polygon points="25,12 35,19 35,31 25,38 15,31 15,19" 
+                                 stroke="#00aaff" 
+                                 stroke-width="1.5" 
+                                 fill="rgba(0,170,255,0.1)"/>
+                        
+                        <!-- Central core -->
+                        <circle cx="25" cy="25" r="6" 
+                                fill="url(#techGradient)" 
+                                filter="url(#glow)"/>
+                        
+                        <!-- Tech lines -->
+                        <line x1="25" y1="5" x2="25" y2="12" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        <line x1="40" y1="15" x2="35" y2="19" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        <line x1="40" y1="35" x2="35" y2="31" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        <line x1="25" y1="45" x2="25" y2="38" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        <line x1="10" y1="35" x2="15" y2="31" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        <line x1="10" y1="15" x2="15" y2="19" stroke="#00aaff" stroke-width="1" opacity="0.8"/>
+                        
+                        <!-- Data nodes -->
+                        <circle cx="25" cy="8" r="1.5" fill="#00aaff" opacity="0.9"/>
+                        <circle cx="37" cy="17" r="1.5" fill="#00aaff" opacity="0.9"/>
+                        <circle cx="37" cy="33" r="1.5" fill="#00aaff" opacity="0.9"/>
+                        <circle cx="25" cy="42" r="1.5" fill="#00aaff" opacity="0.9"/>
+                        <circle cx="13" cy="33" r="1.5" fill="#00aaff" opacity="0.9"/>
+                        <circle cx="13" cy="17" r="1.5" fill="#00aaff" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <div class="logo-title">CSRC</div>
+                    <div class="logo-subtitle">Center for Secure and Reliable Space Communications</div>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#home">Home</a>
+                <a href="#operations">Research</a>
+                <a href="#projects">Projects</a>
+                <a href="#partners">Partners</a>
+                <a href="#team">Team</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero" id="home">
+        </section>
+
+        <section class="simulation-section">
+            <iframe 
+                src="https://sondrer.github.io/space3/" 
+                class="seamless-iframe"
+                title="Space3 Satellite Tracking Simulation"
+                allowfullscreen>
+            </iframe>
+        </section>
+
+        <section class="operations-container" id="operations">
+            <div class="simulation-header">
+                <h2>Research</h2>
+            </div>
+            <div class="research-content">
+                <div class="research-grid">
+                    <div class="research-card" id="research-card-1" onclick="toggleResearch(this)">
+                        <h3>Secure Communication</h3>
+                        <p>Advanced quantum-resistant encryption protocols for secure space communications</p>
+                        <div class="research-details-dropdown" id="dropdown-1">
+                            <p>Our secure communication research focuses on developing quantum-resistant cryptographic protocols specifically designed for space environments. This includes lattice-based cryptography, code-based schemes, and implementation security for resource-constrained satellite hardware.</p>
+                        </div>
+                    </div>
+                    <div class="research-card" id="research-card-2" onclick="toggleResearch(this)">
+                        <h3>Satellite Networks</h3>
+                        <p>Autonomous satellite constellation management and secure networking protocols</p>
+                        <div class="research-details-dropdown" id="dropdown-2">
+                            <p>Satellite network research encompasses autonomous constellation management, secure inter-satellite communication protocols, and robust networking algorithms for deep space missions. We develop AI-driven solutions for dynamic network topology management.</p>
+                        </div>
+                    </div>
+                    <div class="research-card" id="research-card-3" onclick="toggleResearch(this)">
+                        <h3>Defense Systems</h3>
+                        <p>Next-generation space-based defense and monitoring systems</p>
+                        <div class="research-details-dropdown" id="dropdown-3">
+                            <p>Our defense systems research includes advanced space-based monitoring capabilities, threat detection algorithms, and secure command and control systems for national security applications in space.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-container" id="projects">
+            <div class="section-header">
+                <h2>Projects</h2>
+                <p>Current research projects </p>
+            </div>
+            <div class="projects-content">
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="25" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <circle cx="30" cy="30" r="15" fill="#00aaff" opacity="0.3"/>
+                                <circle cx="30" cy="30" r="8" fill="#00aaff"/>
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h4>High Assurance Satellite Communication </h4>
+                            <p>Design of module for high assurance space communication: maximizing security and speed with minimal footprint </p>
+                            <button class="project-toggle" onclick="toggleProject(this)">View Details</button>
+                            <div class="project-dropdown">
+                                <p>This project focuses on implementing quantum-resistant encryption algorithms in satellite communication systems. Project funded by Ministry of Defense through NSM to develop high speed quantum resilient cryptographic module for resource constrained satellite hardware. Keywords: Implementation security, formal verification. The goal is to maximize security and speed, while minimizing resource usage. PL: Sondre Rønjom</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="10" y="20" width="40" height="25" rx="3" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <circle cx="20" cy="32" r="2" fill="#00aaff"/>
+                                <circle cx="30" cy="32" r="2" fill="#00aaff"/>
+                                <circle cx="40" cy="32" r="2" fill="#00aaff"/>
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h4>Hardware Security Modules for Space</h4>
+                            <p>Secure hardware implementations for satellite onboard systems</p>
+                            <button class="project-toggle" onclick="toggleProject(this)">View Details</button>
+                            <div class="project-dropdown">
+                                <p>Research into tamper-resistant hardware security modules specifically designed for space environments. Includes formal verification methods and radiation-hardened cryptographic implementations under the direction of Henrik Fegran.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <polygon points="30,5 45,20 45,40 30,55 15,40 15,20" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <circle cx="30" cy="30" r="8" fill="#00aaff"/>
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h4>Formal Verification of Space Systems</h4>
+                            <p>Mathematical verification of satellite communication protocols</p>
+                            <button class="project-toggle" onclick="toggleProject(this)">View Details</button>
+                            <div class="project-dropdown">
+                                <p>Application of formal methods and mathematical verification techniques to ensure correctness of satellite communication protocols. Led by Håkon Gylterud with contributions from Gabriel Slettvoll on automated theorem proving.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="25" stroke="#00aaff" stroke-width="2" fill="none"/>
+                                <circle cx="30" cy="30" r="20" stroke="#00aaff" stroke-width="1" fill="none"/>
+                                <circle cx="30" cy="30" r="15" stroke="#00aaff" stroke-width="1" fill="none"/>
+                                <circle cx="30" cy="15" r="3" fill="#00aaff"/>
+                                <circle cx="45" cy="30" r="3" fill="#00aaff"/>
+                                <circle cx="30" cy="45" r="3" fill="#00aaff"/>
+                                <circle cx="15" cy="30" r="3" fill="#00aaff"/>
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h4>Satellite Constellation Security</h4>
+                            <p>Secure distributed satellite systemss</p>
+                            <button class="project-toggle" onclick="toggleProject(this)">View Details</button>
+                            <div class="project-dropdown">
+                                <p>Development of secure communication protocols for satellite constellations, including fault-tolerant consensus algorithms and distributed key management systems. Research focuses on autonomous satellite networks and secure inter-satellite links, and distributed quantum sensing for space awarenes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="partners-container" id="partners">
+            <div class="section-header">
+                <h2>Partners</h2>
+                <p>Collaborative organizations and industry partners</p>
+            </div>
+            <div class="partners-content">
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <div class="partner-logo">
+                            <img src="NSM_Forkortelse liggende_negativ.png (optimized_original).png" alt="NSM Logo" />
+                        </div>
+                        <div class="partner-info">
+                            <h4>Norwegian National Security Authority</h4>
+                            <p>National technical authority for high assurance commuinications security (NoNCSA)</p>
+                        </div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="30" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <text x="40" y="45" text-anchor="middle" fill="#00aaff" font-family="Arial" font-size="10" font-weight="bold">X</text>
+                            </svg>
+                        </div>
+                        <div class="partner-info">
+                            <h4>X</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <polygon points="40,10 60,30 60,50 40,70 20,50 20,30" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <text x="40" y="45" text-anchor="middle" fill="#00aaff" font-family="Arial" font-size="8" font-weight="bold">Y</text>
+                            </svg>
+                        </div>
+                        <div class="partner-info">
+                            <h4>Y</h4>
+                            <p>Y</p>
+                        </div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="20" width="40" height="40" rx="5" stroke="#00aaff" stroke-width="2" fill="rgba(0,170,255,0.1)"/>
+                                <text x="40" y="45" text-anchor="middle" fill="#00aaff" font-family="Arial" font-size="9" font-weight="bold">Z</text>
+                            </svg>
+                        </div>
+                        <div class="partner-info">
+                            <h4>Z</h4>
+                            <p>Z</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-container" id="team">
+            <div class="section-header">
+                <h2>Research Team</h2>
+                <p>Staff and PhD researchers</p>
+            </div>
+            <div class="team-content">
+                <div class="team-section">
+                    <h3>Researchers</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%2300aaff'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Sondre Rønjom">
+                            </div>
+                            <div class="member-info">
+                                <h4>Sondre Rønjom</h4>
+                                <p></p>
+                                <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                                <div class="bio-dropdown">
+                                    <p>Cryptography, secure communications/systems, advanced cryptography... etc</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%230088cc'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Prof. Marcus Rodriguez">
+                            </div>
+                            <div class="member-info">
+                                <h4>Øyvind Ytrehus</h4>
+                                <p> </p>
+                                <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                                <div class="bio-dropdown">
+                                    <p>Coding Theory, </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                          <div class="member-photo">
+                              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%23006699'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Dr. Elena Volkov">
+                          </div>
+                          <div class="member-info">
+                              <h4>Håkon Robbestad Gylterud</h4>
+                              <p></p>
+                              <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                              <div class="bio-dropdown">
+                                  <p>Formal Methods and Verification...</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="team-member">
+                        <div class="member-photo">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%23006699'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Dr. Elena Volkov">
+                        </div>
+                        <div class="member-info">
+                            <h4>Morten Øygarden</h4>
+                            <p></p>
+                            <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                            <div class="bio-dropdown">
+                                <p>KingPin Space</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="team-section">
+                    <h3>PhD Researchers</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%2300aaff'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Alex Kim">
+                            </div>
+                            <div class="member-info">
+                                <h4>Arne Sandrib</h4>
+                                <p>PhD Candidate - Space mathematics</p>
+                                <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                                <div class="bio-dropdown">
+                                    <p>Arne is developing math for space communications under the direction of Sondre Rønjom</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%230088cc'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="Maria Santos">
+                            </div>
+                            <div class="member-info">
+                                <h4>Henrik Fegran</h4>
+                                <p>PhD Candidate - Satelite Security</p>
+                                <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                                <div class="bio-dropdown">
+                                    <p>Secure implementations of hardware security modules for satellite networks, including formal methods for verificiation, under the direciton of Sondre Rønjom</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%23006699'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="James Thompson">
+                            </div>
+                            <div class="member-info">
+                                <h4>Tor Kristian Ellingsen</h4>
+                                <p>PhD Candidate </p>
+                                <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                                <div class="bio-dropdown">
+                                    <p>Cryptography under the direction of Sondre Rønjom</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                          <div class="member-photo">
+                              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%23006699'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Cpath d='M75 90 Q45 120 105 120 L75 120 Z' fill='white'/%3E%3C/svg%3E" alt="James Thompson">
+                          </div>
+                          <div class="member-info">
+                              <h4>Gabriel Slettvoll</h4>
+                              <p>PhD Candidate </p>
+                              <button class="bio-toggle" onclick="toggleBio(this)">View Bio</button>
+                              <div class="bio-dropdown">
+                                  <p>Formal methods under the direction of Håkon Gylterud</p>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-container" id="contact">
+            <div class="section-header">
+                <h2>Contact</h2>
+                <p>Get in touch with our research team</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Center for Secure and Reliable Space Communications</h3>
+                    <p>Email: info@csrsc.no</p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Center for Secure and Reliable Space Communications</h3>
+            <p>Leading research in space-based communications, satellite security, and next-generation encryption technologies.</p>
+            <p>Real-time satellite tracking powered by Celestrak TLE data and SGP4 orbital mechanics.</p>
+            <div class="footer-links">
+                <a href="#research">Research Areas</a>
+                <a href="#publications">Publications</a>
+                <a href="#partnerships">Partnerships</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // CSRSC Space Center Website
+        // Single-page navigation with smooth scrolling
+        
+        // Handle navigation clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    if (targetId === 'home') {
+                        // Scroll to top for home button
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        // Scroll to specific section
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        // Team bio dropdown functionality
+        function toggleBio(button) {
+            const dropdown = button.nextElementSibling;
+            const isActive = dropdown.classList.contains('active');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.bio-dropdown.active').forEach(openDropdown => {
+                if (openDropdown !== dropdown) {
+                    openDropdown.classList.remove('active');
+                    openDropdown.previousElementSibling.textContent = 'View Bio';
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isActive) {
+                dropdown.classList.remove('active');
+                button.textContent = 'View Bio';
+            } else {
+                dropdown.classList.add('active');
+                button.textContent = 'Hide Bio';
+            }
+        }
+
+        // Project details dropdown functionality
+        function toggleProject(button) {
+            const dropdown = button.nextElementSibling;
+            const isActive = dropdown.classList.contains('active');
+            
+            // Close all other project dropdowns
+            document.querySelectorAll('.project-dropdown.active').forEach(openDropdown => {
+                if (openDropdown !== dropdown) {
+                    openDropdown.classList.remove('active');
+                    openDropdown.previousElementSibling.textContent = 'View Details';
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isActive) {
+                dropdown.classList.remove('active');
+                button.textContent = 'View Details';
+            } else {
+                dropdown.classList.add('active');
+                button.textContent = 'Hide Details';
+            }
+        }
+
+        // Research details dropdown functionality
+        function toggleResearch(card) {
+            const dropdown = card.querySelector('.research-details-dropdown');
+            const isActive = dropdown.classList.contains('active');
+            
+            // Debug: log which dropdown we're targeting
+            console.log('Toggling dropdown:', dropdown.id, 'Currently active:', isActive);
+            
+            // Close all other research dropdowns by targeting specific IDs
+            document.querySelectorAll('#dropdown-1, #dropdown-2, #dropdown-3').forEach(openDropdown => {
+                if (openDropdown !== dropdown) {
+                    console.log('Closing dropdown:', openDropdown.id);
+                    openDropdown.classList.remove('active');
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isActive) {
+                dropdown.classList.remove('active');
+                console.log('Closed dropdown:', dropdown.id);
+            } else {
+                dropdown.classList.add('active');
+                console.log('Opened dropdown:', dropdown.id);
+            }
+        }
+
+        // Website functionality
+        let simulationRunning = false;
+        let satellitesVisible = true;
+
+        function openFullSimulation() {
+            window.open('https://sondrer.github.io/space2/', '_blank');
+        }
+
+        function toggleEmbeddedView() {
+            const overlay = document.querySelector('.iframe-overlay');
+            const iframe = document.getElementById('simulation-iframe');
+            
+            if (overlay.classList.contains('hidden')) {
+                overlay.classList.remove('hidden');
+                iframe.style.pointerEvents = 'none';
+            } else {
+                overlay.classList.add('hidden');
+                iframe.style.pointerEvents = 'auto';
+            }
+        }
+
+        function refreshSimulation() {
+            const iframe = document.getElementById('simulation-iframe');
+            iframe.src = iframe.src;
+            console.log('Refreshing embedded simulation...');
+        }
+
+        function updateControlButtons() {
+            const buttons = document.querySelectorAll('.control-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (simulationRunning) {
+                buttons[1].classList.add('active'); // Pause button
+            } else {
+                buttons[0].classList.add('active'); // Start button
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                
+                // Special handling for home button - scroll to very top
+                if (href === '#home') {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Update stats periodically
+        function updateStats() {
+            // This would be connected to the actual simulation data
+            const trackedCount = Math.floor(Math.random() * 1000) + 500;
+            document.getElementById('tracked-count').textContent = trackedCount.toLocaleString();
+        }
+
+        // Update stats every 5 seconds
+        setInterval(updateStats, 5000);
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('CSRSC Website loaded successfully');
+            
+            // Add some dynamic starfield effect
+            createStarfield();
+        });
+
+        function createStarfield() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const stars = [];
+            for (let i = 0; i < 100; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    opacity: Math.random()
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                stars.forEach(star => {
+                    star.opacity += 0.01;
+                    if (star.opacity > 1) star.opacity = 0;
+                    
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+  </body>
+</html>
